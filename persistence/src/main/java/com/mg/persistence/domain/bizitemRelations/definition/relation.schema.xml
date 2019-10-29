@@ -1,0 +1,21 @@
+<BizItemRelations targetItemType="Consumer">
+    <Relation from="User" foreignField="trackingId" localField="content.userTID" unwind="true">
+        <Exclude field="content.password"/>
+    </Relation>
+    <Relation from="User" foreignField="trackingId" localField="content.userTID" unwind="true">
+        <Exclude field="content.password"/>
+        <Exclude field="content.password"/>
+        <Exclude field="content.password"/>
+        <Exclude field="content.password"/>
+        <Exclude field="content.password"/>
+        <Exclude field="content.password"/>
+        <Exclude field="content.password"/>
+        <Exclude field="content.password"/>
+    </Relation>
+    <Relation from="User" foreignField="trackingId" localField="content.userTID" unwind="true">
+        <Exclude field="content.password"/>
+    </Relation>
+    <Relation from="User" foreignField="trackingId" localField="content.userTID" unwind="true">
+        <Exclude field="content.password"/>
+    </Relation>
+</BizItemRelations>
