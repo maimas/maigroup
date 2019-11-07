@@ -1,4 +1,4 @@
-# Beauty-Espresso
+# MaiGroup Platform Repository
 
 Platform for online booking and beauty service appointments
 
