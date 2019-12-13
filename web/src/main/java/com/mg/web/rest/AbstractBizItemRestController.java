@@ -58,6 +58,13 @@ public abstract class AbstractBizItemRestController {
         return ResponseEntity.ok(models);
     }
 
+    protected ResponseEntity getOne(String itemType, String fieldName, Object fieldValue) {
+        List<BizItemModel> models = queryAggregateService.find(Criteria.where(fieldName).is(fieldValue), itemType);
+        BizItemModel model = (models != null && !models.isEmpty()) ? models.get(0) : null;
+
+        return ResponseEntity.ok(model);
+    }
+
     protected ResponseEntity get(String itemType, Criteria criteria) {
         List<BizItemModel> models = queryAggregateService.find(criteria, itemType);
         return ResponseEntity.ok(models);
