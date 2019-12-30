@@ -40,7 +40,7 @@ public class EntityServiceFactory {
 //                if (actualTypeArguments != null && actualTypeArguments.length > 0) {
 //                    try {
 //                        Class persistenceModelClass = Class.forName(((Class) actualTypeArguments[0]).getName());
-//                        cache.put(persistenceModelClass, service);
+//                        cache.set(persistenceModelClass, service);
 //                        loaded = true;
 //                    } catch (ClassNotFoundException ignore) {
 //                    }

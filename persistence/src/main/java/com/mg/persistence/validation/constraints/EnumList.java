@@ -10,11 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Validates if the field length has expected size.
- * Size_1_100 - min 1; max 100
- * Size_1 - min 1; max unlimited
- */
 @Data
 @Log4j2
 @EqualsAndHashCode(callSuper = false)
@@ -56,9 +51,7 @@ public class EnumList extends AbstractConstraint {
 
         for (String value : enumListToCheck) {
             Enum en = new Enum(enumService, schemaProperty, String.valueOf(value), constraintName);
-//            en.setFieldName(fieldName);
-//            en.setFieldValue(fieldValue);
-//            en.setFieldValue(String.valueOf(value));
+
             if (!en.isValid()) {
                 valid = false;
                 break;
@@ -69,7 +62,7 @@ public class EnumList extends AbstractConstraint {
     }
 
     public String getViolationMsg() {
-        return String.format("Field type [%s] value [%s] contains at list one invalid enumeration value --> [%s]", fieldValue, schemaProperty.getCaption(), fieldValue);
+        return String.format("Field [%s] contains at list one invalid enumeration value: [%s]", schemaProperty.getCaption(), fieldValue);
     }
 
 

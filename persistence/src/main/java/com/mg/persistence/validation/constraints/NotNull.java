@@ -15,7 +15,7 @@ public class NotNull extends AbstractConstraint {
     }
 
     public String getViolationMsg() {
-        return String.format("Field [%s] value [%s] should not be null", fieldValue, fieldName);
+        return String.format("Field [%s] value [%s] should not be null", fieldName, fieldValue);
     }
 
 

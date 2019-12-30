@@ -1,36 +1,63 @@
 package com.mg.persistence.config;
 
+import com.mg.persistence.exceptions.RuntimeConfigurationException;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoDatabase;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 
 @Configuration
-public class MongoDBConfig extends AbstractMongoConfiguration {
+public class MongoDBConfig {
+/*
+
+    @Value("${spring.data.mongodb.host}")
+    private String MONGO_DB_HOST;
+
+    @Value("${spring.data.mongodb.port:27017}")
+    private int MONGO_DB_PORT;
+*/
 
     @Value("${spring.data.mongodb.uri}")
-    private String connectionString;
+    private String MONGO_DB_URI;
 
     @Value("${spring.data.mongodb.database}")
-    private String databaseName;
+    private String MONGO_DB_NAME;
 
     private static MongoClient client;
 
 
     @Bean
-    public GridFsTemplate gridFsTemplate() throws Exception {
-        return new GridFsTemplate(mongoDbFactory(), mappingMongoConverter());
+    public MongoClient mongoClient() {
+        return getClient();
     }
+
+    @Bean
+    public MongoTemplate mongoTemplate() {
+        ServerAddress server = getClient().getAddress();
+
+        if (server != null) {
+            MongoClient mongoClient = new MongoClient(server.getHost(), server.getPort());
+            return new MongoTemplate(mongoClient, MONGO_DB_NAME);
+        }
+
+        throw new RuntimeConfigurationException("Could not initialize mongo template. Server address is null");
+    }
+
+    @Bean
+    public GridFsTemplate gridFsTemplate() {
+        return new GridFsTemplate(mongoTemplate().getMongoDbFactory(), mongoTemplate().getConverter());
+    }
+
 
     public MongoDatabase getDatabase() {
-        return getClient().getDatabase(databaseName);
+        return getClient().getDatabase(MONGO_DB_NAME);
     }
 
-    @Override
     public String getDatabaseName() {
         return getDatabase().getName();
     }
@@ -39,15 +66,11 @@ public class MongoDBConfig extends AbstractMongoConfiguration {
         if (client == null) {
             synchronized (MongoClient.class) {
                 if (client == null) {
-                    client = new MongoClient(new MongoClientURI(connectionString));
+                    client = new MongoClient(new MongoClientURI(MONGO_DB_URI));
                 }
             }
         }
         return client;
     }
 
-    @Override
-    public MongoClient mongoClient() {
-        return getClient();
-    }
 }

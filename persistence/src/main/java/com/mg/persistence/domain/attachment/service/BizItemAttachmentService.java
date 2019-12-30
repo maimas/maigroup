@@ -44,19 +44,19 @@ public abstract class BizItemAttachmentService {
 
         converterService.castContent(model);
 
-        GridFS collectionFS = getGridFs((String) model.getFromContent(SystemFiled.RelatedItemType));
-        ByteArrayInputStream dataStream = new ByteArrayInputStream((byte[]) model.getFromContent(SystemFiled.Data));
+        GridFS collectionFS = getGridFs((String) model.get(SystemFiled.RelatedItemType));
+        ByteArrayInputStream dataStream = new ByteArrayInputStream((byte[]) model.get(SystemFiled.Data));
 
         GridFSInputFile fsFile = collectionFS.createFile(dataStream, true);
-        fsFile.setFilename((String) model.getFromContent(SystemFiled.FileName));
-        fsFile.setContentType((String) model.getFromContent(SystemFiled.DataType));
+        fsFile.setFilename((String) model.get(SystemFiled.FileName));
+        fsFile.setContentType((String) model.get(SystemFiled.DataType));
 
         // metadata
         fsFile.put(SystemFiled.TrackingId, model.getTrackingId());
         fsFile.put(SystemFiled.CreatedDate, model.getCreatedDate());
         fsFile.put(SystemFiled.ModifiedDate, model.getModifiedDate());
-        fsFile.put(SystemFiled.RelatedItemTID, model.getFromContent(SystemFiled.RelatedItemTID));
-        fsFile.put(SystemFiled.RelatedItemType, model.getFromContent(SystemFiled.RelatedItemType));
+        fsFile.put(SystemFiled.RelatedItemTID, model.get(SystemFiled.RelatedItemTID));
+        fsFile.put(SystemFiled.RelatedItemType, model.get(SystemFiled.RelatedItemType));
         fsFile.put(SystemFiled.ItemType, model.getItemType());
 
         if (model.get_id() != null) {//update the attachment id has an id
@@ -103,13 +103,13 @@ public abstract class BizItemAttachmentService {
         model.set_id(file.getId().toString());
         model.setTrackingId((String) file.get(SystemFiled.TrackingId));
 
-        model.putInContent(SystemFiled.CreatedDate, file.get(SystemFiled.CreatedDate));
-        model.putInContent(SystemFiled.ModifiedDate, file.get(SystemFiled.ModifiedDate));
-        model.putInContent(SystemFiled.RelatedItemTID, file.get(SystemFiled.RelatedItemTID));
-        model.putInContent(SystemFiled.RelatedItemType, file.get(SystemFiled.RelatedItemType));
-        model.putInContent(SystemFiled.Data, IOUtils.toByteArray(file.getInputStream()));
-        model.putInContent(SystemFiled.DataType, file.getContentType());
-        model.putInContent(SystemFiled.FileName, file.getFilename());
+        model.set(SystemFiled.CreatedDate, file.get(SystemFiled.CreatedDate));
+        model.set(SystemFiled.ModifiedDate, file.get(SystemFiled.ModifiedDate));
+        model.set(SystemFiled.RelatedItemTID, file.get(SystemFiled.RelatedItemTID));
+        model.set(SystemFiled.RelatedItemType, file.get(SystemFiled.RelatedItemType));
+        model.set(SystemFiled.Data, IOUtils.toByteArray(file.getInputStream()));
+        model.set(SystemFiled.DataType, file.getContentType());
+        model.set(SystemFiled.FileName, file.getFilename());
 
         return model;
     }

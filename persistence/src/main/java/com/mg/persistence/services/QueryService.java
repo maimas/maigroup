@@ -9,9 +9,11 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.result.DeleteResult;
 import lombok.extern.log4j.Log4j2;
 import org.bson.conversions.Bson;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,10 @@ import java.util.Optional;
 @Log4j2
 public class QueryService extends AbstractQueryService {
 
+    @Autowired
+    public QueryService(MongoTemplate mongoTemplate) {
+        super(mongoTemplate);
+    }
 
     public long count(DBObject query, String collectionName) {
         long startTime = System.currentTimeMillis();

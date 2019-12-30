@@ -43,12 +43,12 @@ public class BizItemModel extends GenericModel {
     }
 
 
-    public BizItemModel putInContent(String key, Object value) {
-        this.content.put(key, value);
+    public BizItemModel set(String contentKey, Object value) {
+        this.content.put(contentKey, value);
         return this;
     }
 
-    public Object getFromContent(String key) {
-        return content.get(key);
+    public Object get(String contentKey) {
+        return content.get(contentKey);
     }
 }

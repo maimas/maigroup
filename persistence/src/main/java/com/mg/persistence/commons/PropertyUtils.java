@@ -153,7 +153,7 @@ public class PropertyUtils {
             return new ObjectMapper().readValue(new ObjectMapper().writeValueAsString(value), new TypeReference<List<BizItemModel>>() {
             });
         } catch (IOException e) {
-            throw new RuntimeException("Failed to parse Object to model. It might be that passed value is not a list.", e);
+            throw new RuntimeException("Failed to parse Object to model. It might be that passed value is not a list of models.", e);
         }
     }
 

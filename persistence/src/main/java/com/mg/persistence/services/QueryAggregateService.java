@@ -7,6 +7,7 @@ import com.mg.persistence.domain.bizitemRelations.service.BizItemRelationsServic
 import com.mg.persistence.services.base.AbstractQueryService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.LookupOperation;
@@ -32,6 +33,10 @@ public class QueryAggregateService extends AbstractQueryService {
 
     @Autowired
     private BizItemRelationsService relationsService;
+
+    public QueryAggregateService(MongoTemplate mongoTemplate) {
+        super(mongoTemplate);
+    }
 
 
     /**

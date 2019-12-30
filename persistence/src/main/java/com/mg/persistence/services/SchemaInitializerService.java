@@ -37,21 +37,32 @@ import static com.mg.persistence.commons.Messages.*;
 @Log4j2
 public class SchemaInitializerService {
 
-    @Autowired
     private EnumService enumService;
+    private BizItemSchemaService itemSchemaService;
+    private BizItemRelationsService itemRelationsService;
+
     @Autowired
-    private BizItemSchemaService bizItemSchemaService;
-    @Autowired
-    private BizItemRelationsService bizItemRelationsService;
+    public SchemaInitializerService(BizItemSchemaService itemSchemaService, EnumService enumService, BizItemRelationsService itemRelationsService) {
+        this.itemSchemaService = itemSchemaService;
+        this.itemRelationsService = itemRelationsService;
+        this.enumService = enumService;
+    }
+
 
     public void initMetadata(String schemasRootDir) {
         log.info(String.format(MSG_SERVICE_START, "System Metadata initialization"));
         try {
-            bizItemSchemaService.clearCache();
-            bizItemRelationsService.clearCache();
+
+            if (!new File(schemasRootDir).exists()) {
+                throw new RuntimeConfigurationException("Invalid metadata directory: " + schemasRootDir);
+            }
+
+            itemSchemaService.clearCache();
+            itemRelationsService.clearCache();
             initSystemEnums(schemasRootDir);
             initSystemBizItemSchema(schemasRootDir);
             initSystemBizItemRelations(schemasRootDir);
+
         } catch (Exception e) {
             throw new RuntimeConfigurationException(e.getLocalizedMessage());
         }
@@ -114,7 +125,7 @@ public class SchemaInitializerService {
         files.forEach(metaFile -> {
             BizItemSchemaType schemaType = schemaXmlReader.readXml(metaFile);
             BizItemSchemaModel schemaModel = schemaXmlReader.toSchemaModel(schemaType);
-            bizItemSchemaService.save(schemaModel);
+            itemSchemaService.save(schemaModel);
         });
     }
 
@@ -125,7 +136,7 @@ public class SchemaInitializerService {
             try {
                 BizItemRelationsType xmlSchema = reader.readXml(metaFile);
                 BizItemRelationsModel model = reader.parse(xmlSchema);
-                bizItemRelationsService.save(model);
+                itemRelationsService.save(model);
             } catch (BizItemRelationException e) {
                 String msg = "Failed to init BizItem relation";
                 log.error(msg, e);

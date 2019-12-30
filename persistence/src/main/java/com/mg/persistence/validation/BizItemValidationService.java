@@ -12,7 +12,6 @@ import com.mg.persistence.domain.enumeration.service.EnumService;
 import com.mg.persistence.exceptions.BizItemSchemaValidationException;
 import com.mg.persistence.exceptions.ValidationSchemaNotFoundException;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -144,12 +143,12 @@ public class BizItemValidationService {
         return unknownProperties;
     }
 
-    private BizItemSchemaModel getValidationSchema(String targetCollection) throws ValidationSchemaNotFoundException {
-        log.trace(String.format("Performing Validation schema lookup for [%s].", targetCollection));
+    private BizItemSchemaModel getValidationSchema(String collection) throws ValidationSchemaNotFoundException {
+        log.trace(String.format("Performing Validation schema lookup for [%s].", collection));
 
-        BizItemSchemaModel schema = bizItemSchemaService.findOne(SystemFiled.TargetItemType, targetCollection, BizItemSchemas);
+        BizItemSchemaModel schema = bizItemSchemaService.findOne(SystemFiled.TargetItemType, collection, BizItemSchemas);
         if (schema == null) {
-            String msg = String.format("Validation Schema Name=[%s] not found in Collection=[%s]", targetCollection, BizItemSchemas);
+            String msg = String.format("Validation Schema [%s] not found in [%s]", collection, BizItemSchemas);
             throw new ValidationSchemaNotFoundException(msg);
         }
         return schema;
@@ -162,7 +161,7 @@ public class BizItemValidationService {
 
     private BizItemModel objectFieldToModel(BizItemModel model, String prp) {
         try {
-            Object item = model.getFromContent(prp);
+            Object item = model.get(prp);
             return PropertyUtils.getObjectAsModel(item);
 
         } catch (Exception e) {
@@ -174,7 +173,7 @@ public class BizItemValidationService {
 
     private List<BizItemModel> objectsFieldToModels(BizItemModel model, String prp) {
         try {
-            Object item = model.getFromContent(prp);
+            Object item = model.get(prp);
             return PropertyUtils.getObjectListAsModels(item);
 
         } catch (Exception e) {

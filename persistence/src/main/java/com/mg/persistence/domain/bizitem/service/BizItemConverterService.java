@@ -40,7 +40,7 @@ public class BizItemConverterService {
             if (schema != null) {
                 model.getContent().forEach((key, value) -> {
                     SchemaProperty property = schema.getProperty(key);
-                    model.putInContent(key, cast(property, value));
+                    model.set(key, cast(property, value));
                 });
 
             } else {

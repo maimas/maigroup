@@ -1,5 +1,6 @@
 package com.mg.persistence.validation.constraints;
 
+import com.mg.persistence.exceptions.RuntimeConfigurationException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,6 +21,7 @@ public class Regex extends AbstractConstraint {
         this.fieldName = fieldName;
         this.fieldValue = fieldValue;
         this.constraintString = constraintString;
+        setParameters();
     }
 
 
@@ -30,13 +32,11 @@ public class Regex extends AbstractConstraint {
         if (String.valueOf(fieldValue).trim().isEmpty()) {
             return false;
         }
-
-        setParameters();
         return Pattern.matches(regex, String.valueOf(fieldValue));
     }
 
     public String getViolationMsg() {
-        return String.format("Invalid value [%s] for the field [%s]. It does't matches the regular expression [%s]", fieldValue, fieldName, regex);
+        return String.format("Field [%s] has invalid value [%s], not matching the regular expression [%s]", fieldName, fieldValue, regex);
     }
 
     private void setParameters() {
