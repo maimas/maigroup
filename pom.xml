@@ -9,7 +9,6 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-
     <modules>
         <module>persistence</module>
         <module>web</module>
@@ -22,6 +21,15 @@
         <spock.version>1.3-groovy-2.5</spock.version>
     </properties>
 
+
+
+<!--    <distributionManagement>-->
+<!--        <repository>-->
+<!--            <id>github</id>-->
+<!--            <name>GitHub MaiGroup Apache Maven Packages</name>-->
+<!--            <url>https://maven.pkg.github.com/maimas/maigroup</url>-->
+<!--        </repository>-->
+<!--    </distributionManagement>-->
 
     <parent>
         <groupId>org.springframework.boot</groupId>
