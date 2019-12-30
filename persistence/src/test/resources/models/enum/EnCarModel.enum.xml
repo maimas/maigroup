@@ -1,0 +1,5 @@
+<Enumeration itemType="EnCarModels" createAtRuntime="false" type="String">
+    <Enum enValue="cr-v" caption="cr" captionTransKey="honda_cap_t_k" description="hd" descriptionTransKey="honda_trans_key"/>
+    <Enum enValue="civic" caption="c" captionTransKey="honda_cap_t_k" description="hd" descriptionTransKey="honda_trans_key"/>
+    <Enum enValue="accord" caption="a" captionTransKey="honda_cap_t_k" description="hd" descriptionTransKey="honda_trans_key"/>
+</Enumeration>

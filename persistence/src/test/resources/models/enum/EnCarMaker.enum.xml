@@ -1,0 +1,6 @@
+<Enumeration itemType="EnCarMakers" createAtRuntime="false" type="String">
+    <Enum enValue="honda"    caption="Honda"    captionTransKey="honda_cap_t_k" description="hd" descriptionTransKey="honda_trans_key"/>
+    <Enum enValue="mercedes" caption="Mercedes" captionTransKey="honda_cap_t_k" description="hd" descriptionTransKey="honda_trans_key"/>
+    <Enum enValue="mazda"    caption="Mazda"    captionTransKey="honda_cap_t_k" description="hd" descriptionTransKey="honda_trans_key"/>
+    <Enum enValue="toyota"   caption="Toyota"   captionTransKey="honda_cap_t_k" description="hd" descriptionTransKey="honda_trans_key"/>
+</Enumeration>
