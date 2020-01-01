@@ -1,4 +1,4 @@
-package groovy.com.mg.persistence.services.integration
+package com.mg.persistence.services.integration
 
 import com.mg.persistence.config.MongoDBConfig
 import com.mg.persistence.domain.bizitem.model.BizItemModel
@@ -51,7 +51,7 @@ class TestBizItemValidationService extends IntegrationTestsSetup {
 
     def setup() {
         if (!schemaInitialized) {
-            initializerService.initMetadata("./src/test/resources/models")
+            initializerService.initMetadata("models")
             schemaInitialized = true
         }
     }

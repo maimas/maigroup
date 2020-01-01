@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -53,15 +54,25 @@ public class SchemaInitializerService {
         log.info(String.format(MSG_SERVICE_START, "System Metadata initialization"));
         try {
 
-            if (!new File(schemasRootDir).exists()) {
+            URL contextResource = Thread.currentThread().getContextClassLoader().getResource(schemasRootDir);
+            File externalResource = new File(schemasRootDir);
+
+            File schemaDir = null;
+            if (externalResource.exists()) {
+                schemaDir = externalResource;
+            } else if (contextResource != null) {
+                schemaDir = new File(contextResource.toURI());
+            }
+
+            if (schemaDir == null || !schemaDir.exists()) {
                 throw new RuntimeConfigurationException("Invalid metadata directory: " + schemasRootDir);
             }
 
             itemSchemaService.clearCache();
             itemRelationsService.clearCache();
-            initSystemEnums(schemasRootDir);
-            initSystemBizItemSchema(schemasRootDir);
-            initSystemBizItemRelations(schemasRootDir);
+            initSystemEnums(schemaDir);
+            initSystemBizItemSchema(schemaDir);
+            initSystemBizItemRelations(schemaDir);
 
         } catch (Exception e) {
             throw new RuntimeConfigurationException(e.getLocalizedMessage());
@@ -73,7 +84,7 @@ public class SchemaInitializerService {
     /**
      * Loads the enumerations in the database from the XML files.
      */
-    private void initSystemEnums(String dir) {
+    private void initSystemEnums(File dir) {
         log.info(String.format(MSG_TASK_START, "Initialize Enums"));
 
         File enumSchemasDir = new File(dir, "enum");
@@ -85,7 +96,7 @@ public class SchemaInitializerService {
     /**
      * Init BizItem schema definitions
      */
-    private void initSystemBizItemSchema(String dir) {
+    private void initSystemBizItemSchema(File dir) {
         log.info(String.format(MSG_TASK_START, "Initialize BizItem Schemas"));
 
         File bizItemSchemas = new File(dir, "schema");
@@ -98,7 +109,7 @@ public class SchemaInitializerService {
     /**
      * Init BizItem schema definitions
      */
-    private void initSystemBizItemRelations(String dir) {
+    private void initSystemBizItemRelations(File dir) {
         log.info(String.format(MSG_TASK_START, "Initialize BizItemRelations"));
 
         File bizItemRelationsDir = new File(dir, "schema_relations");
@@ -111,6 +122,11 @@ public class SchemaInitializerService {
     private void initSystemEnums(List<File> files) {
         EnumXmlReader enumXmlReader = new EnumXmlReader();
 
+        if (files == null || files.isEmpty()) {
+            log.warn("Enums schema generation is skipped as there are no definition files present");
+            return;
+        }
+
         files.forEach(metaFile -> {
             EnumerationType enumeration = enumXmlReader.readXml(metaFile);
 
@@ -122,6 +138,11 @@ public class SchemaInitializerService {
     private void initBizItemsSchemas(List<File> files) {
         BizItemSchemaXmlReader schemaXmlReader = new BizItemSchemaXmlReader();
 
+        if (files == null || files.isEmpty()) {
+            log.warn("BizItemsSchemas generation is skipped as there are no definition files present");
+            return;
+        }
+
         files.forEach(metaFile -> {
             BizItemSchemaType schemaType = schemaXmlReader.readXml(metaFile);
             BizItemSchemaModel schemaModel = schemaXmlReader.toSchemaModel(schemaType);
@@ -131,6 +152,11 @@ public class SchemaInitializerService {
 
     private void initBizItemsRelationSchemas(List<File> files) {
         BizItemRelationsXmlReader reader = new BizItemRelationsXmlReader();
+
+        if (files == null || files.isEmpty()) {
+            log.warn("BizItemsRelationSchemas generation is skipped as there are no definition files present");
+            return;
+        }
 
         files.forEach(metaFile -> {
             try {
@@ -148,6 +174,11 @@ public class SchemaInitializerService {
 
     private List<File> getAllFiles(File file) {
         try {
+
+            if (!file.exists()) {
+                return null;
+            }
+
             return Files.walk(Paths.get(file.toURI()))
                     .filter(Files::isRegularFile)
                     .map(Path::toFile)

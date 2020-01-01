@@ -46,7 +46,7 @@ public class BusinessRulesService {
 
         ruleGlobals.put(BusinessRuleGlobals.RuleHeaders, ruleHeaders);
         ruleGlobals.put(BusinessRuleGlobals.Log, log);
-//        ruleGlobals.put(BusinessRuleGlobals.BusinessRulesService, this);
+//        ruleGlobals.set(BusinessRuleGlobals.BusinessRulesService, this);
 
         DroolsRunner droolsRunner = new DroolsRunner(model.getItemType());
         droolsRunner.run(model, ruleGlobals);

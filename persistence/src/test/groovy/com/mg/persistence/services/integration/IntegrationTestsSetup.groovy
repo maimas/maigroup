@@ -1,4 +1,4 @@
-package groovy.com.mg.persistence.services.integration
+package com.mg.persistence.services.integration
 
 
 import de.flapdoodle.embed.mongo.MongodExecutable

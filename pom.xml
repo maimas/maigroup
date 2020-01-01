@@ -23,13 +23,13 @@
 
 
 
-<!--    <distributionManagement>-->
-<!--        <repository>-->
-<!--            <id>github</id>-->
-<!--            <name>GitHub MaiGroup Apache Maven Packages</name>-->
-<!--            <url>https://maven.pkg.github.com/maimas/maigroup</url>-->
-<!--        </repository>-->
-<!--    </distributionManagement>-->
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub MaiGroup Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/maimas/maigroup</url>
+        </repository>
+    </distributionManagement>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -184,14 +184,5 @@
 
     </dependencies>
 
-
-    <!--        <build>-->
-    <!--            <plugins>-->
-    <!--                <plugin>-->
-    <!--                    <groupId>org.springframework.boot</groupId>-->
-    <!--                    <artifactId>spring-boot-maven-plugin</artifactId>-->
-    <!--                </plugin>-->
-    <!--            </plugins>-->
-    <!--        </build>-->
 
 </project>
